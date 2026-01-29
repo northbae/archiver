@@ -1,64 +1,68 @@
 # C++ File Archiver
 
-Проект представляет собой консольное приложение на C++ для сжатия и распаковки файлов с использованием различных алгоритмов сжатия без потерь. Архиватор позволяет сравнивать эффективность разных методов, измеряя время выполнения и коэффициент сжатия.
+This project is a C++ console application designed for compressing and decompressing files using various lossless compression algorithms. The archiver includes features to compare the efficiency of different methods by measuring execution time and compression ratios.
 
-## Возможности
+## Features
 
-Проект реализует следующие алгоритмы:
+The project implements the following algorithms:
 
-*   **RLE (Run-Length Encoding)** — кодирование длин серий.
-*   **Huffman Coding** — алгоритм Хаффмана (энтропийное кодирование).
-*   **LZW (Lempel-Ziv-Welch)** — словарный метод сжатия.
-*   **BWT (Burrows-Wheeler Transform)** — преобразование Барроуза-Уилера (используется как предварительный этап подготовки данных для улучшения сжатия другими алгоритмами).
-*   **Arithmetic Coding** — (в разработке) — арифметическое кодирование.
+*   **RLE (Run-Length Encoding)** — Simple sequence encoding.
+*   **Huffman Coding** — Entropy encoding algorithm.
+*   **LZW (Lempel-Ziv-Welch)** — Dictionary-based compression method.
+*   **BWT (Burrows-Wheeler Transform)** — Used as a data preprocessing step to improve compression efficiency for other algorithms.
+*   **Arithmetic Coding** — *(In development)*.
 
-## Структура проекта
+## Project Structure
 
-*   **`Tester.cpp/h`** — основной модуль тестирования. Управляет процессом сжатия и декомпрессии, замеряет время (`clock_t`) и вычисляет коэффициент сжатия.
-*   **`RLE.cpp/h`, `Huffman.cpp/h`, `BWT.cpp/h`**, **`LZW.cpp/h`** — модули соответствующих алгоритмов.
-*   **`FileAccessor`** — вспомогательный класс для чтения/записи файлов в бинарном режиме.
-*   **`files/`** — папка с исходными файлами для тестов.
-*   **`CompressedFiles/`** — папка, куда сохраняются сжатые и распакованные файлы.
+*   **`Tester.cpp/h`** — The main testing module. It manages the compression and decompression process, measures time (`clock_t`), and calculates the compression ratio.
+*   **`RLE.cpp/h`, `Huffman.cpp/h`, `BWT.cpp/h`, `LZW.cpp/h`** — Implementation modules for the respective algorithms.
+*   **`FileAccessor`** — A helper class for reading and writing files in binary mode.
+*   **`files/`** — Folder containing source files for testing.
+*   **`CompressedFiles/`** — Folder where compressed and decompressed files are saved.
 
-## Сборка и запуск
+## Build and Run
 
-Проект использует `Makefile` для автоматизации сборки. В качестве компилятора используется `clang++`.
+The project uses a **Makefile** for build automation. The default compiler is `clang++`.
 
-### Требования
-*   clang++ (или g++, если изменить переменную `CXX` в Makefile)
+### Requirements
+
+*   `clang++` (or `g++` if you change the `CXX` variable in the Makefile)
 *   Make
-*   Linux / macOS (или Windows с WSL/MinGW)
+*   Linux / macOS (or Windows via WSL/MinGW)
 
-### Команды сборки
+### Build Commands
 
-**Сборка проекта (Release):**
+**Build Project (Release):**
 
-Создаст исполняемый файл `main` с флагами оптимизации.
+Creates the `main` executable with optimization flags.
 ```bash
 make
-# или
+# or
 make all
 ```
-**Сборка для отладки (Debug):**
+**Build for Debugging:**
 
-Создаст файл main-debug с символами отладки (-g) и отключенной оптимизацией.
+Creates the main-debug executable with debug symbols (-g) and optimization disabled.
 
 ```Bash
 make main-debug
 ```
-**Очистка проекта:**
+**Clean Project:**
 
-Удаляет скомпилированные бинарные файлы.
+Removes compiled binary files.
 
 ```Bash
 make clean
 ```
-## Использование
-В текущей реализации логика запускается через класс Tester. Пример работы:
+## Usage
 
-Программа считывает входной файл из указанного пути.
+In the current implementation, the logic is executed via the Tester class.
 
-Выбирается метод сжатия:
+Workflow example:
+
+The program reads the input file from the specified path.
+
+A compression method is selected:
 
 'R' — RLE
 
@@ -66,27 +70,28 @@ make clean
 
 'L' — LZW
 
-Опционально применяется BWT перед основным сжатием.
+Optionally, BWT is applied before the main compression.
 
-Результат сохраняется в папку CompressedFiles/.
+The result is saved to the CompressedFiles/ folder.
 
-Происходит обратная декомпрессия для проверки целостности данных.
+Reverse decompression is performed to verify data integrity.
 
-Пример вывода программы
+Example Output
 
-После завершения работы метод Tester::GetTesting возвращает строку со статистикой:
+Upon completion, the Tester::GetTesting method returns a statistics string:
 
 ```text
-метод LZW + BWT
-время компрессии = 0.045 сек
-время декомпрессии = 0.032 сек
-размер начального файла = 15400
-размер конечного файла = 8200
-коэффициент сжатия 53.246%
-```
-## Файловая система
 
-Убедитесь, что перед запуском существует папка для выходных файлов, иначе программа может не сохранить результат:
+method LZW + BWT
+compression time = 0.045 sec
+decompression time = 0.032 sec
+initial file size = 15400
+final file size = 8200
+compression ratio 53.246%
+```
+## File System
+
+Ensure the output directory exists before running the program, otherwise the results may not be saved:
 
 ```Bash
 mkdir -p CompressedFiles
